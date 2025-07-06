@@ -1,0 +1,14 @@
+<svg width="220" height="60" viewBox="0 0 220 60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Icon -->
+  <rect x="0" y="0" width="60" height="60" rx="12" fill="#3B82F6"/>
+  <path d="M18 20c0-2.2 1.8-4 4-4h16c2.2 0 4 1.8 4 4v12c0 2.2-1.8 4-4 4H25l-5 4v-4h-2c-2.2 0-4-1.8-4-4V20z"
+        fill="#ffffff"/>
+  <circle cx="26" cy="28" r="1.5" fill="#3B82F6"/>
+  <circle cx="32" cy="28" r="1.5" fill="#3B82F6"/>
+  <circle cx="38" cy="28" r="1.5" fill="#3B82F6"/>
+
+  <!-- Text: InterPrep (no space, styled) -->
+  <text x="70" y="40" font-family="Segoe UI, sans-serif" font-size="28" font-weight="bold">
+    <tspan fill="#111827">Inter</tspan><tspan fill="#3B82F6">Prep</tspan>
+  </text>
+</svg>
