@@ -7,7 +7,7 @@ import { eq } from 'drizzle-orm'
 import RecordAnswerSection from './_components/RecordAnswerSection'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { toast } from 'sonner' // Import toast
+import { toast } from 'sonner' 
 
 function StartInterview({params}) {
 
@@ -15,6 +15,7 @@ function StartInterview({params}) {
     const [mockInterviewQuestion, setMockInterviewQuestion] = useState()
     const [activeQuestionIndex, setActiveQuestionIndex] = useState(0)
     const [answeredQuestions, setAnsweredQuestions] = useState([]);
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         GetInterviewDetails();
@@ -27,11 +28,34 @@ function StartInterview({params}) {
     }, [mockInterviewQuestion]);
 
     const GetInterviewDetails = async () => {
-        const result = await db.select().from(MockInterview).where(eq(MockInterview.mockId, params.interviewId))
-        setInterviewData(result[0])
-        
-        const jsonMockResp = JSON.parse(result[0].jsonMockResp)
-        setMockInterviewQuestion(jsonMockResp)
+        try {
+            setLoading(true)
+            const result = await db.select().from(MockInterview).where(eq(MockInterview.mockId, params.interviewId))
+            
+            if (!result || result.length === 0) {
+                toast.error('Interview not found')
+                return
+            }
+            
+            setInterviewData(result[0])
+
+            let jsonMockResp
+            try {
+                const cleanedJson = result[0].jsonMockResp.trim().replace(/\s+/g, ' ')
+                jsonMockResp = JSON.parse(cleanedJson)
+            } catch (parseError) {
+                console.error('JSON Parse Error:', parseError)
+                toast.error('Failed to load interview questions. Please try again.')
+                return
+            }
+            
+            setMockInterviewQuestion(jsonMockResp)
+        } catch (error) {
+            console.error('Error fetching interview details:', error)
+            toast.error('Failed to load interview. Please try again.')
+        } finally {
+            setLoading(false)
+        }
     }
 
     const handleNextQuestion = () => {
@@ -59,6 +83,27 @@ function StartInterview({params}) {
         }
     };
 
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary mx-auto"></div>
+                    <p className="mt-4 text-lg">Loading interview...</p>
+                </div>
+            </div>
+        )
+    }
+
+    if (!mockInterviewQuestion) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <div className="text-center">
+                    <p className="text-lg text-red-600">Failed to load interview questions</p>
+                    <Button onClick={GetInterviewDetails} className="mt-4">Retry</Button>
+                </div>
+            </div>
+        )
+    }
 
  return (
     <div>

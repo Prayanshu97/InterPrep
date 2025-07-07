@@ -1,14 +1,19 @@
 "use client"
 import { Lightbulb, Volume2 } from 'lucide-react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 function QuestionsSection( {mockInterviewQuestion, activeQuestionIndex, answeredQuestions, onQuestionClick}) { 
+    const [isClient, setIsClient] = useState(false)
+
+    useEffect(() => {
+        setIsClient(true)
+    }, [])
 
     const textToSpeech = (text) => {
-        if('speechSynthesis' in window){
+        if (typeof window !== 'undefined' && 'speechSynthesis' in window){
             const speech = new SpeechSynthesisUtterance(text)
             window.speechSynthesis.speak(speech)
-        }else{
+        } else {
             alert('Sorry, Your browser does not support text to speech.')
         }
     }
@@ -32,7 +37,9 @@ function QuestionsSection( {mockInterviewQuestion, activeQuestionIndex, answered
             {mockInterviewQuestion[activeQuestionIndex]?.question} 
         </h2>
 
-        <Volume2 className='cursor-pointer' onClick={() => textToSpeech(mockInterviewQuestion[activeQuestionIndex]?.question)}/>
+        {isClient && (
+            <Volume2 className='cursor-pointer' onClick={() => textToSpeech(mockInterviewQuestion[activeQuestionIndex]?.question)}/>
+        )}
 
         <div className='border rounded-lg p-5 bg-blue-100 mt-20'>
             <h2 className='flex gap-2 items-center text-primary'>

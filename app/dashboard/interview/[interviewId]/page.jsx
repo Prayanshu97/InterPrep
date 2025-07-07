@@ -35,7 +35,7 @@ function Interview({params}) {
                     <div className='flex flex-col p-5 rounded-lg border gap-5'>
                         <h2 className='text-lg'><strong>Job Role / Job Position: </strong>{interviewData.jobPosition}</h2>
                         <h2 className='text-lg'><strong>Job Description / Tech Stack: </strong>{interviewData.jobDesc}</h2>
-                        <h2 className='text-lg'><strong>Years of Experience </strong>{interviewData.jobExperience}</h2> 
+                        <h2 className='text-lg'><strong>Years of Experience: </strong>{interviewData.jobExperience}</h2> 
                     </div>
 
                     <div className='p-5 border rounded-lg border-yellow-300 bg-yellow-100'>
@@ -65,7 +65,7 @@ function Interview({params}) {
 
         </div>
 
-        <div className='flex justify-end items-end'>
+        <div className='flex justify-end items-end mt-5'>
             <Link href={'/dashboard/interview/'+params.interviewId+'/start'}>
                 <Button>Start Interview</Button>
             </Link>
